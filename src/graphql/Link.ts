@@ -1,12 +1,22 @@
 import { extendType, idArg, intArg, nonNull, objectType, stringArg } from "nexus";
-import { NexusGenObjects } from "../../nexus-typegen";
 
 export const Link = objectType({
-    name: "Link", // 1 
-    definition(t) {  // 2
-        t.nonNull.int("id"); // 3 
-        t.nonNull.string("description"); // 4
-        t.nonNull.string("url"); // 5 
+    name: "Link",
+    definition(t) {
+        t.nonNull.int("id");
+        t.nonNull.string("description");
+        t.nonNull.string("url");
+        t.field("postedBy", {
+            type: "User",
+            resolve(parent, args, context) {
+                return context.prisma.link.findUnique({
+                    where: {
+                        id: parent.id
+                    }
+                })
+                .postedBy()
+            }
+        })
     },
 });
 
@@ -32,12 +42,19 @@ export const LinkMutation = extendType({
                 url: nonNull(stringArg())
             },
             resolve(parent, args, context) {
+                const { prisma, userId } = context
+                
+                if (!userId) {
+                    throw new Error("Cannot post without logging in.")
+                }
+
                 const { description, url } = args
 
-                const newLink = context.prisma.link.create({
+                const newLink = prisma.link.create({
                     data: {
                         description: description,
-                        url: url
+                        url: url,
+                        postedBy: { connect: { id: userId } }
                     }
                 })
 
@@ -52,15 +69,22 @@ export const LinkMutation = extendType({
                 url: nonNull(stringArg())
             },
             resolve(parent, args, context) {
-                const { id, description, url } = args
+                const { prisma, userId } = context
                 
-                const updateLink = context.prisma.link.update({
+                if (!userId) {
+                    throw new Error("Cannot post without logging in.")
+                }
+
+                const { id, description, url } = args
+
+                const updateLink = prisma.link.update({
                     where: {
                         id: id
                     },
                     data: {
                         description: description,
-                        url: url
+                        url: url,
+                        postedBy: { connect: { id: userId } }
                     }
                 })
 
@@ -73,9 +97,15 @@ export const LinkMutation = extendType({
                 id: nonNull(intArg())
             },
             resolve(parent, args, context) {
+                const { prisma, userId } = context
+                
+                if (!userId) {
+                    throw new Error("Cannot post without logging in.")
+                }
+
                 const { id } = args
                 
-                const deleteLink = context.prisma.link.delete({
+                const deleteLink = prisma.link.delete({
                     where: {
                         id: id
                     }
