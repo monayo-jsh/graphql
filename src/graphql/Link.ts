@@ -3,9 +3,10 @@ import { extendType, idArg, intArg, nonNull, objectType, stringArg } from "nexus
 export const Link = objectType({
     name: "Link",
     definition(t) {
-        t.nonNull.int("id");
-        t.nonNull.string("description");
-        t.nonNull.string("url");
+        t.nonNull.int("id")
+        t.nonNull.string("description")
+        t.nonNull.string("url")
+        t.nonNull.dateTime("createdAt")
         t.field("postedBy", {
             type: "User",
             resolve(parent, args, context) {
@@ -31,7 +32,7 @@ export const LinkQuery = extendType({
         t.nonNull.list.nonNull.field("feed", {
             type: "Link",
             resolve(parent, args, context, info) {
-                return context.prisma.link.findMany();
+                return context.prisma.link.findMany()
             }
         })
     }
@@ -63,7 +64,7 @@ export const LinkMutation = extendType({
                     }
                 })
 
-                return newLink;
+                return newLink
             }
         }),
         t.nonNull.field("updateLink", {
