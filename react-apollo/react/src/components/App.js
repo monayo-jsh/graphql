@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Header from './Header';
 import Login from './Login'
-import LinkList from "./LinkList"
+import Search from './Search';
 import LinkCreate from './LinkCreate';
 import './../styles/App.css';
+import LinkList from './LinkList';
 
 
 const App = () => {
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<LinkList />} />
           <Route path="/create" element={<LinkCreate />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </div>
     </div>
