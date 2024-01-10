@@ -1,8 +1,9 @@
 type Query {
-    me(id: String!): User
+    """ User 스키마 - 사용자 조회 """
+    me(id: Int!): User
   }
 
 type User {
-    id: String!
+    id: Int!
     name: String
   }

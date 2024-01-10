@@ -1,6 +1,20 @@
 type Query {
-    books: [Book]
+    books: BookListReturn
   }
+
+type BookListReturn {
+    """ 전체갯수 """
+    total: Int,
+    
+    """ 리턴갯수 """
+    count: Int,
+    
+    """ 현재위치 """
+    offset: Int,
+    
+    """ 응답데이터 """
+    list: [Book]
+}
 
 type Book {
     title: String

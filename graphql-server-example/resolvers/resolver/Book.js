@@ -6,18 +6,14 @@
           console.log("context", context)
           console.log("info", info)
 
-          //응답값 설정
-          const books = [
-            {
-              title: 'The Awakening',
-              author: 'Kate Chopin',
-            },
-            {
-              title: 'City of Glass',
-              author: 'Paul Auster',
-            },
-          ]
-          return books
+          const books = [...Array(10)].map((data, index) => { return { title: `title-${index}`, author: `author-${index}`}})
+
+          return {
+            total: books.length,
+            count: books.length,
+            offset: 0,
+            list: books
+          }
         }
     }
   }
