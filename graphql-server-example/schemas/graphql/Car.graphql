@@ -1,0 +1,8 @@
+type Query {
+    cars: [Car]
+  }
+
+type Car {
+    name: String
+    number: String
+  }
