@@ -16,8 +16,11 @@ async function startApolloServer() {
 
     const server = new ApolloServer({
         schema: schema,
+        
+        //playground: false,
+
         //resolver context forwarding to IncomingMessage -> context.headers accept
-        context: ({ req }) => { return req; }
+        context: ({ req, res }) => ({ headers: req.headers, req, res })
     })
 
     await server.listen()
